@@ -1,67 +1,39 @@
 package guru.springframework.spring5webapp.domain;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
 public class Publisher {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String addressLine1;
+    private String city;
+    private String state;
+    private String zip;
 
-    @ManyToMany(mappedBy = "authors")
-    private Set<Book> books = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name="author_book",
+            joinColumns = @JoinColumn(name="book_id"),
+            inverseJoinColumns = @JoinColumn(name="author_id"))
+    private Set<Author> authors;
 
-    public Author() {
+    public Publisher() {
 
-    }
-
-    public Author(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-//        this.books = books;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 
     @Override
     public String toString() {
-        return "Author{" +
+        return "Publisher{" +
                 "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", books=" + books +
+                ", name='" + name + '\'' +
+                ", addressLine1='" + addressLine1 + '\'' +
+                ", city='" + city + '\'' +
+                ", state=" + state +
+                ", zip=" + zip +
                 '}';
     }
 
@@ -70,9 +42,9 @@ public class Publisher {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Author author = (Author) o;
+        Publisher publisher = (Publisher) o;
 
-        return id != null ? id.equals(author.id) : author.id == null;
+        return id != null ? id.equals(publisher.id) : publisher.id == null;
     }
 
     @Override
